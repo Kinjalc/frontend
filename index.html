@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <title>Tourist attractions</title>
+        <link rel="stylesheet" href="app.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="http://fonts.googleapis.com/css?family=Oxygen+Mono"></script>
+    </head>
+    <body>
+
+    <!-- <nav id="cities_dropdown_nav">
+      <ul>
+      <li>Choose your city
+          <ul id="cities_dropdown">
+            <li><a href="#">Chicago</a></li>
+            <li><a href="#">New York</a></li>
+            <li><a href="#">Rio</a></li>
+            <li>boston</li>
+            <li>new york</li>
+          </ul>
+      </li>
+      </ul>
+    </nav> -->
+    <select class ="cities_dropdown">
+      <option>Select your city</option>
+    </select>
+    <div class="chicago">
+      <div id="city">
+        <!-- <button id="chicago">Chicago</button> -->
+      </div>
+      <div id="get_attractions">
+        <button id="get_all">Get all tourist attractions</button>
+      </div>
+      <div id="category">
+        <button class ="categories_button" id="landmark">landmark</button>
+        <button class ="categories_button" id="museum">museum</button>
+        <button class ="categories_button" id="skyline">skyline</button>
+        <button class ="categories_button" id="entertainment">entertainment</button>
+        <button class ="categories_button" id="architecture">architecture</button>
+        <div id = "categoryResults"></div>
+      </div>
+      <div id = "category_results"></div>
+    </div>
+    <script type="text/javascript" charset="utf-8" async defer>
+    $(document).ready(function(){
+      $.ajax({
+      type: 'GET',
+      url: "http://localhost:3000/cities"
+      }).done(function(response){
+          // var citiesContent= '';
+          var cityHeader;
+          response.forEach(function(city){
+            // var cities = "<p><b>" + city.name + ", " + city.state + ", "+city.country + "</b>" + "</br>" + city.description +"</p>"
+              // citiesContent += cities;
+              // $(".chicago").attr('id', city.id);
+              cityHeader = "<option class = 'dropdown_city_name' id ='" + city.id +"'>" + city.name +"</option>"
+              $(".cities_dropdown").append(cityHeader)
+          });
+         // $("#city").html(citiesContent);
+       });
+
+
+  $("#get_all").on("click",function(e){
+    var city_id = $(".chicago").attr('id');
+    $.ajax({
+      type: 'GET',
+      url: "http://localhost:3000/cities/"+ city_id + "/tourist_attractions"
+    }).done(function(response){
+        var attractionsContent = '';
+          response.forEach(function(attraction){
+            var attractions = "<p><b>" + attraction.name + "</b>" + attraction.description + "</p>"
+            attractionsContent += attractions;
+          });
+      $("#get_attractions").html(attractionsContent);
+      });
+  });
+
+
+  $(".categories_button").on("click",function(e){
+    var cityId = $(".chicago").attr('id');
+    var categoryName = ($(this)).attr('id');
+    $.ajax({
+      type: 'GET',
+      url: "http://localhost:3000/cities/"+ cityId + "/tourist_attractions"
+    }).done(function(response){
+        var attractionsContent = '';
+          response.forEach(function(attraction){
+            if (attraction.category.includes(categoryName)){
+            var attractions = "<p><b>" + attraction.name + "</b>" + attraction.description + "</p>"
+            attractionsContent += attractions;
+            };
+          });
+      $("#categoryResults").html(attractionsContent);
+      });
+  });
+});
+
+    </script>
+
+    </body>
+</html>
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <title>Tourist attractions</title>
+        <!-- <link rel="stylesheet" href="css/style.css"> -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    </head>
+    <body>
+    <div class="chicago">
+      <div id="city">
+        <!-- <button id="chicago">Chicago</button> -->
+      </div>
+      <div id="get_attractions">
+        <button id="get_all">Get all tourist attractions</button>
+      </div>
+      <div id="category">
+        <button id="landmark">landmark</button>
+        <button id="museum">museum</button>
+        <button id="skyline">skyline</button>
+        <button id="entertainment">entertainment</button>
+        <button id="architecture">architecture</button>
+      </div>
+    </div>
+    <script type="text/javascript" charset="utf-8" async defer>
+
+    </script>
+
+    </body>
+</html>
